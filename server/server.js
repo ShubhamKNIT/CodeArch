@@ -276,7 +276,7 @@ app.post("/getDoctorListByPatientId", (request, response) => {
 });
 
 app.get("/dummy", (req, res) => {
-    res.json({})
+    res.json({});
 })
 
 app.listen(port, () => {
