@@ -71,6 +71,24 @@ app.post("/getDoctorDetails", (request, response) => {
         throw error;
     };
 });
+
+app.post("/getHospitalDetails", (request, response) => {
+    const { hospitalId } = request.body;
+    try{
+        response.setHeader("Content-Type", "application/json");
+        dbConn.query(`SELECT * FROM HOSPITALS WHERE HOSPITAL_ID = ${hospitalId}`, (error, results) => {
+            if(error){
+                throw error;
+            }
+            if(results.length > 0) {
+                return response.json(results[0]);
+            }
+            return response.json({});
+        });
+    } catch(error) {
+        throw error;
+    };
+});
 app.get("/dummy", (req, res) => {
     res.json({})
 })
