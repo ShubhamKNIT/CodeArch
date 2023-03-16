@@ -166,6 +166,28 @@ app.post("/getDoctorListByHospitpalId", (request, response) => {
         throw error;
     };
 });
+
+app.post("/getPatientListByHospitpalId", (request, response) => {
+    const { hospitalId } = request.body;
+    const query = `SELECT P.PATIENT_ID, P.FIRST_NAME, P.LAST_NAME, P.GENDER, P.DOB, P.MOBILE, P.EMAIL, P.IDENTITY_TYPE, P.IDENTITY_VALUE, 
+    P.CITY, P.STATE, P.PINCODE, K.CHECK_IN,K.CHECK_OUT,K.STATUS FROM PATIENTS P INNER JOIN HOSPITAL_PATIENT_MAPPER K 
+    ON P.PATIENT_ID=K.PATIENT_ID WHERE P.PATIENT_ID IN(SELECT M.PATIENT_ID FROM HOSPITAL_PATIENT_MAPPER M 
+    WHERE M.HOSPITAL_ID = ${hospitalId})`;
+    try{
+        response.setHeader("Content-Type", "application/json");
+        dbConn.query(query, (error, results) => {
+            if(error){
+                throw error;
+            }
+            if(results.length > 0) {
+                return response.json(results);
+            }
+            return response.json([]);
+        });
+    } catch(error) {
+        throw error;
+    };
+});
 app.get("/dummy", (req, res) => {
     res.json({})
 })
