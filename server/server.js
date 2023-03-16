@@ -53,6 +53,24 @@ app.post("/userLogin", (request, response) => {
     };
 });
 
+app.post("/getDoctorDetails", (request, response) => {
+    const { doctorId } = request.body;
+    console.log("body", request.body)
+    try{
+        response.setHeader("Content-Type", "application/json");
+        dbConn.query(`SELECT * FROM DOCTORS WHERE DOCTOR_ID = ${doctorId}`, (error, results) => {
+            if(error){
+                throw error;
+            }
+            if(results.length > 0) {
+                return response.json(results[0]);
+            }
+            return response.json({});
+        });
+    } catch(error) {
+        throw error;
+    };
+});
 app.get("/dummy", (req, res) => {
     res.json({})
 })
