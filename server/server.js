@@ -107,6 +107,24 @@ app.post("/getPatientDetails", (request, response) => {
         throw error;
     };
 });
+
+app.post("/getAdminDetails", (request, response) => {
+    const { adminId } = request.body;
+    try{
+        response.setHeader("Content-Type", "application/json");
+        dbConn.query(`SELECT * FROM ADMIN WHERE ADMIN_ID = ${adminId}`, (error, results) => {
+            if(error){
+                throw error;
+            }
+            if(results.length > 0) {
+                return response.json(results[0]);
+            }
+            return response.json({});
+        });
+    } catch(error) {
+        throw error;
+    };
+});
 app.get("/dummy", (req, res) => {
     res.json({})
 })
