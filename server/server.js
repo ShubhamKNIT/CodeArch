@@ -9,6 +9,17 @@ app.use(bodyParser.json({extended: true}));
 
 const port = 3004;
 
+// connection configurations
+const dbConn = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'chm'
+    });
+
+// connect to database
+dbConn.connect(); 
+
 app.get("/dummy", (req, res) => {
     res.json({})
 })
