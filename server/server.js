@@ -18,7 +18,40 @@ const dbConn = mysql.createConnection({
     });
 
 // connect to database
-dbConn.connect(); 
+dbConn.connect();
+
+app.post("/userLogin", (request, response) => {
+    const { userId, password } = request.body;
+
+    try{
+        response.setHeader("Content-Type", "application/json");
+        const userQuery = `select * from users where user_id = ${userId} and password = '${password}' and  status = 'ACTIVE';`
+        const roleQuery = `SELECT RU.ROLE_ID, R.ROLE_NAME, R.ROLE_CODE FROM ROLE_USER RU 
+        INNER JOIN ROLES R ON RU.ROLE_ID = R.ROLE_ID WHERE RU.USER_ID = ${userId}`;
+        
+        dbConn.query(userQuery, (error, results) => {
+            if(error){
+                throw error;
+            } else if(results.length === 0) {
+                return response.json({error: {error_code: "INVALLID_CREDENTIAL"}, description: "invalid user credential"});
+            } else if(results.length > 0){
+                dbConn.query(roleQuery, (e, dataSet) => {
+                    if(e)
+                        throw e;
+                    if(dataSet.length > 0){
+                        return response.json(dataSet[0]);
+                    } else {
+                        return response.json({error: {error_code: "NO_ROLE"}, description: "no user role available"});
+                    }
+                });
+            }else {
+                return response.json({});
+            }
+        });
+    } catch(error) {
+        throw error;
+    };
+});
 
 app.get("/dummy", (req, res) => {
     res.json({})
