@@ -265,6 +265,28 @@ app.post("/getPatientDiseaseList", (request, response) => {
         throw error;
     };
 });
+
+app.post("/getDoctorListByPatientId", (request, response) => {
+    const { patientId } = request.body;
+    const query = `SELECT DISTINCT D.FIRST_NAME, D.LAST_NAME, D.DOB, D.GENDER, D.MOBILE, D.EMAIL_ID, D.ADDRESS, PDM.FROM_DATE, PDM.TO_DATE, H.HOSPITAL_ID,
+    H.HOSPITAL_NAME FROM PATIENT_DOCTOR_MAPPER PDM INNER JOIN DOCTORS D ON D.DOCTOR_ID = PDM.DOCTOR_ID INNER JOIN HOSPITALS H 
+    ON PDM.HOSPITAL_ID = H.HOSPITAL_ID WHERE PDM.PATIENT_ID = ${patientId}`;
+
+    try{
+        response.setHeader("Content-Type", "application/json");
+        dbConn.query(query, (error, results) => {
+            if(error){
+                throw error;
+            }
+            if(results.length > 0) {
+                return response.json(results);
+            }
+            return response.json([]);
+        });
+    } catch(error) {
+        throw error;
+    };
+});
 app.get("/dummy", (req, res) => {
     res.json({})
 })
