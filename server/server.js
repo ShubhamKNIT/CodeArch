@@ -136,6 +136,25 @@ app.post("/getAdminDetails", (request, response) => {
         throw error;
     };
 });
+
+app.post("/getDoctorDiseaseList", (request, response) => {
+    const { doctorId } = request.body;
+    const query = `SELECT D.DISEASE_ID,D.DISEASE_NAME,D.CATEGORY FROM DISEASES D WHERE D.DISEASE_ID IN(SELECT M.DISEASE_ID FROM DOCTOR_DISEASE_MAPPER M WHERE M.DOCTOR_ID = ${doctorId})`;
+    try{
+        response.setHeader("Content-Type", "application/json");
+        dbConn.query(query, (error, results) => {
+            if(error){
+                throw error;
+            }
+            if(results.length > 0) {
+                return response.json(results);
+            }
+            return response.json([]);
+        });
+    } catch(error) {
+        throw error;
+    };
+});
 app.get("/dummy", (req, res) => {
     res.json({})
 })
