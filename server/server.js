@@ -8,17 +8,8 @@ app.use(cors());
 app.use(bodyParser.json({extended: true}));
 
 const port = 3004;
-const express = require('express');
-const cors = require("cors");
-const mysql = require("mysql");
-const bodyParser = require("body-parser");
 
-const app = express();
-app.use(cors());
-app.use(bodyParser.json({extended: true}));
-
-const port = 3004;
-
+// connection configuration
 const dbConn = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -28,8 +19,6 @@ const dbConn = mysql.createConnection({
 
 // connect to database
 dbConn.connect(); 
-
-// connection configuration
 
 app.post("/userLogin", (request, response) => {
     const { userId, password } = request.body;
@@ -287,17 +276,10 @@ app.post("/getDoctorListByPatientId", (request, response) => {
         throw error;
     };
 });
+
 app.get("/dummy", (req, res) => {
     res.json({})
-})
-
-app.listen(port, () => {
-    console.log(`App listening on port ${port}`);
 });
-
-app.get("/dummy", (req, res) => {
-    res.json({})
-})
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
