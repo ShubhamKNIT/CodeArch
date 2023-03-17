@@ -245,6 +245,26 @@ app.post("/getPatientListByHospitalDoctorId", (request, response) => {
         throw error;
     };
 });
+
+app.post("/getPatientDiseaseList", (request, response) => {
+    const { patientId } = request.body;
+    const query = `SELECT * FROM DISEASES WHERE DISEASE_ID IN (SELECT M.DISEASE_ID FROM PATIENT_DISEASE_MAPPER M WHERE PATIENT_ID=${patientId})`;
+
+    try{
+        response.setHeader("Content-Type", "application/json");
+        dbConn.query(query, (error, results) => {
+            if(error){
+                throw error;
+            }
+            if(results.length > 0) {
+                return response.json(results);
+            }
+            return response.json([]);
+        });
+    } catch(error) {
+        throw error;
+    };
+});
 app.get("/dummy", (req, res) => {
     res.json({})
 })
