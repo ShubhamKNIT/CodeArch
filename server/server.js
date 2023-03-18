@@ -72,11 +72,47 @@ app.post("/getDoctorDetails", (request, response) => {
     };
 });
 
+app.post("/getDoctorDetailsByUserId", (request, response) => {
+    const { userId } = request.body;
+    try{
+        response.setHeader("Content-Type", "application/json");
+        dbConn.query(`SELECT * FROM DOCTORS WHERE USER_ID = ${userId}`, (error, results) => {
+            if(error){
+                throw error;
+            }
+            if(results.length > 0) {
+                return response.json(results[0]);
+            }
+            return response.json({});
+        });
+    } catch(error) {
+        throw error;
+    };
+});
+
 app.post("/getHospitalDetails", (request, response) => {
     const { hospitalId } = request.body;
     try{
         response.setHeader("Content-Type", "application/json");
         dbConn.query(`SELECT * FROM HOSPITALS WHERE HOSPITAL_ID = ${hospitalId}`, (error, results) => {
+            if(error){
+                throw error;
+            }
+            if(results.length > 0) {
+                return response.json(results[0]);
+            }
+            return response.json({});
+        });
+    } catch(error) {
+        throw error;
+    };
+});
+
+app.post("/getHospitalDetailsByUserId", (request, response) => {
+    const { userId } = request.body;
+    try{
+        response.setHeader("Content-Type", "application/json");
+        dbConn.query(`SELECT * FROM HOSPITALS WHERE USER_ID = ${userId}`, (error, results) => {
             if(error){
                 throw error;
             }

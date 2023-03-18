@@ -1,0 +1,44 @@
+<html>
+
+<head>
+    <script>
+        function onPageLoad() {
+            const url = window.location.href;
+            const params = url.split("?")[1];
+            if (params) {
+                const _userId = params.split("=")[1];
+                window.fetch("http://localhost:3004/getHospitalDetailsByUserId", {
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ userId: _userId })
+                }).then(response => response.json())
+                .then(res => {
+                    insertDetailsIntoDOM(res);
+                }).catch(e => console.log("error", e));
+            }
+            console.log(params)
+        }
+
+        function insertDetailsIntoDOM(resp){
+            document.getElementById("show-hospitalId").innerHTML = resp.HOSPITAL_ID;
+            document.getElementById("show-hospitalName").innerHTML = resp.HOSPITAL_NAME;
+        }
+    </script>
+</head>
+
+<body onload="onPageLoad()">
+    <div>Hospital</div>
+    <div>
+        <span>Hospital ID: </span>
+        <span id="show-hospitalId"></span>
+    </div>
+    <div>
+            <span>Hospital Name: </span>
+            <span id="show-hospitalName"></span>
+        </div>
+</body>
+
+</html>
