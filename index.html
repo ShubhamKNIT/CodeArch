@@ -1,57 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta id="_moz_html_fragment">
-<link rel="stylesheet" href="/Users/shubhamkumar/Downloads/CodeArch-main/login.css"> 
+  <meta charset="UTF-8">
+  <title>CSS User Profile Card</title>
+  <link rel="stylesheet" href="C:\Users\ST\Downloads\CodeArch-main\index.css">
+  <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+
+  <script>
+
+
+    function loginClick() {
+      
+
+      const elements = document.getElementById("form1").elements;
+      
+      const formData = {};
+      if (elements.length > 0) {
+        for (let i = 0; i < elements.length; i++) {
+          const ele = elements.item(i);
+          const name = ele.name;
+          const value = ele.value;
+          console.log(name);
+          console.log(value);
+
+          formData[name] = value;
+        }
+      }
+      console.log("formdata",formData);
+      if (formData['type'] === "Patient") {
+        window.fetch("http://localhost:3004/patientLogin", {
+          method: "POST",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(formData)
+        }).then(response => response.json())
+          .then(response => {
+            console.log(response);
+            window.location.href = "file:///C:/Users/ST/Downloads/CodeArch-main/patient.html?patientId=" + formData.userId;
+          })
+          .catch(e => console.log("error", e));
+      }
+
+    
+
+       
+
+       else {
+        // Hospital Employee Login service call...
+        window.fetch("http://localhost:3004/userLogin", {
+          method: "POST",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(formData)
+        }).then(response => response.json())
+          .then(response => {
+            console.log(response);
+            if (response.ROLE_CODE === "DOC") {
+              window.location.href = "file:///C:/Users/ST/Downloads/CodeArch-main/doctor.html?userId=" + formData.userId;
+            } else if (response.ROLE_CODE === "HOS_ADMIN") {
+              window.location.href =
+                "file:///C:/Users/ST/Downloads/CodeArch-main/receptionist.html?userId=" + formData.userId;
+            } else if (response.ROLE_CODE === "CENT_ADMIN") {
+
+            }
+
+          })
+          .catch(e => console.log("error", e));
+      }
+    }
+
+    
+
+
+
+  </script>
 </head>
-<body style="background-image:url(backg.jpg)">
-<div style="text-align: center;">
-    <big>HOSPITAL MANAGEMENT SYSTEM<br>
-    <br>
-    <br>
-    </big>
-    <form class="login-form" method="post" action="--">
-        <center>
-            <select name="type">
+
+<body>
+  <div class="wrapper">
+    <div class="left">
+      <img src="C:\Users\ST\Downloads\CodeArch-main\61792.jpg" alt="user" width="300">
+    </div>
+    <div class="right">
+      <div class="info">
+        <h3>Login</h3>
+        <div class="info_data">
+          <form  id="form1">
+            <div class="data">
+              <select name="type">
                 <option value="Patient">Patient</option>
                 <option value="Hospital Employee">Hospital Employee</option>
-            </select>
-            <table width="40%">
-                <tbody>
-                    <tr>
-                        <td style="text-align:center;">USERNAME
-                        <br>
-                        </td>
-                        <td><input name="username" type="text" placeholder="username" >
-                        <br>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="text-align:center;">PASSWORD
-                        <br>
-                        </td>
-                        <td><input name="password" type="password" placeholder="password" >
-                        <br>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <br>
-            <br>
-            <input value="LOGIN" name="submit" type="submit"><br>
-        </center>
-    </form>
-    <br>
-    <br>
-    <iframe width="560" height="315" 
-    src="https://en.wikipedia.org/wiki/Health">    
-    </iframe>
-    <button onclick="window.print()">Print this page</button>
-</div>
+              </select>
+            </div>
+            <div class="txt_field">
+              <input type="text" name="userId" required>
+              <span></span>
+              <label>userId</label>
+            </div>
+            <div class="txt_field">
+              <input type="password" name="password" required>
+              <span></span>
+              <label>Password</label>
+            </div>
+
+          </form>
+          <input type="button" value="Login" onclick="loginClick()">
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
+
 </html>
-
-
