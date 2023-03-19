@@ -1,62 +1,60 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-  <title></title>
-  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>CSS User Profile Card</title>
+	<link rel="stylesheet" href="patient.css">
+	<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
 </head>
-<body style="background-image: url(images/background4.jpg);">
-<br>
+<body>
 
-<br>
-
-<form method="post" action="--"><big><big>PRESCRIPTION :<br>
-  <br>
-  </big></big>
-  <table width:="50%">
-    <tbody>
-		<tr>
-        <td>Doctor Name : <br>
-        </td>
-        <td><input name="doc_name" type="text"><br>
-        </td>
-      </tr>
-      <tr>
-        <td>Patient ID : <br>
-        </td>
-        <td><input name="id" type="text"><br>
-        </td>
-      </tr>
-      <tr>
-        <td>Medicine : <br>
-        </td>
-        <td><textarea cols="30" rows="3" name="medicine"></textarea><br>
-        </td>
-      </tr>
-      <tr>
-        <td>Dosage : <br>
-        </td>
-        <td>
-		<input name="dose" type="checkbox"> Morning<br>
-        <input name="dose" type="checkbox"> Afternoon<br>
-        <input name="dose" type="checkbox"> Night<br>
-        </td>
-      </tr>
-      <tr>
-        <td>Diagnosis :<br>
-        </td>
-        <td><textarea cols="30" rows="3" name="diagnosis"></textarea><br>
-        </td>
-      </tr>
-      <tr>
-        <td>Additional Instructions :<br>
-        </td>
-        <td><textarea cols="30" rows="3" name="instructions"></textarea> </td>
-      </tr>
-    </tbody>
-  </table>
-  <br>
-  <br>
-  <input name="submit" value="Generate Prescription" type="submit">&nbsp; &nbsp; <input name="reset" value="RESET" type="reset"> <big><big><br>
-  </big></big></form>
+<div class="wrapper">
+    <div class="left">
+        <img src="/Users/shubhamkumar/Documents/webpage/icon-ge0ba9687b_1920.png" 
+        alt="user" width="200">
+        <h4>Patient</h4>
+        <h4>ID: </h4>
+         <p>
+            <!--first_name-->
+            <!--last_name-->
+            <br>DOB: <!--DOB-->
+         </p>
+    </div>
+    <div class="right">
+        <div class="info">
+            <h3>Information</h3>
+            <div class="info_data">
+                <div class="data">
+                  <h4>Email  &nbsp; &nbsp; <!--email@gmail.com--></h4>
+                </div>
+                <div class="data">
+                  <h4>Phone  &nbsp; &nbsp;<!--phone no.--></h4>
+                </div>
+                <div class="data">
+                  <h4>ID Type &nbsp;&ensp;<!--ID Type--></h4>
+                </div>
+                <div class="data">
+                  <h4>ID Value &nbsp;&ensp;<!--ID Value--></h4>
+                </div>
+            </div>
+        </div>
+      
+      <div class="projects">
+            <h3>Address</h3>
+            <div class="projects_data">
+                <div class="data">
+                  <h4>City &nbsp; &nbsp; &ensp; <!--["city"]--></h4>
+                </div>
+                <div class="data">
+                  <h4>State &ensp;&ensp;&ensp;<!--["state]--></h4>
+                </div>
+                <div class="data">
+                  <h4>Pin &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; <!--["pincode"]--></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
