@@ -1,45 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>CSS User Profile Card</title>
-	<link rel="stylesheet" href="https://github.com/ShubhamKNIT/CodeArch/blob/main/index.html">
-	<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta id="_moz_html_fragment">
+<link rel="stylesheet" href="/Users/shubhamkumar/Downloads/CodeArch-main/login.css"> 
 </head>
-<body>
-
-<div class="wrapper">
-    <div class="left">
-        <img src="https://github.com/ShubhamKNIT/CodeArch/blob/main/61792.jpg" 
-        alt="user" width="300">
-    </div>
-    <div class="right">
-        <div class="info">
-            <h3>Login</h3>
-            <div class="info_data">
-                <form method="post">
-                  <div class="data">
-                    <select name="type">
-                      <option value="Patient">Patient</option>
-                      <option value="Hospital Employee">Hospital Employee</option>
-                    </select>
-                  </div>
-                  <div class="txt_field">
-                    <input type="text" required>
-                    <span></span>
-                    <label>Username</label>
-                  </div>
-                  <div class="txt_field">
-                    <input type="password" required>
-                    <span></span>
-                    <label>Password</label>
-                  </div>
-                  <input type="submit" value="Login">
-                </form>
-            </div>
-        </div>
-    </div>
+<body style="background-image:url(backg.jpg)">
+<div style="text-align: center;">
+    <big>HOSPITAL MANAGEMENT SYSTEM<br>
+    <br>
+    <br>
+    </big>
+    <center>
+    <form class="login-form" method="post" action="--">
+            <select name="type">
+                <option value="Patient">Patient</option>
+                <option value="Hospital Employee">Hospital Employee</option>
+            </select>
+            <table width="40%">
+                <tbody>
+                    <tr>
+                        <td style="text-align:center;">USERNAME
+                        <br>
+                        </td>
+                        <td><input name="username" type="text" placeholder="username" >
+                        <br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;">PASSWORD
+                        <br>
+                        </td>
+                        <td><input name="password" type="password" placeholder="password" >
+                        <br>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+            <br>
+            <input value="LOGIN" name="submit" type="submit"><br>
+        </center>
+    </form>
+    <br>
+    <br>
+    <iframe width="560" height="315" 
+    src="https://en.wikipedia.org/wiki/Health">    
+    </iframe>
+    <button onclick="window.print()">Print this page</button>
 </div>
-
 </body>
 </html>
+
+
