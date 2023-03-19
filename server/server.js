@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 
 const app = express();
 app.use(cors());
-app.use(bodyParser.json({extended: true}));
+app.use(bodyParser.json({ extended: true }));
 
 const port = 3004;
 
@@ -15,113 +15,175 @@ const dbConn = mysql.createConnection({
     user: 'root',
     password: '',
     database: 'chm'
-    });
+});
 
 // connect to database
-dbConn.connect(); 
+dbConn.connect();
 
 app.post("/userLogin", (request, response) => {
     const { userId, password } = request.body;
 
-    try{
+    try {
         response.setHeader("Content-Type", "application/json");
         const userQuery = `select * from users where user_id = ${userId} and password = '${password}' and  status = 'ACTIVE';`
         const roleQuery = `SELECT RU.ROLE_ID, R.ROLE_NAME, R.ROLE_CODE FROM ROLE_USER RU 
         INNER JOIN ROLES R ON RU.ROLE_ID = R.ROLE_ID WHERE RU.USER_ID = ${userId}`;
-
+        
         dbConn.query(userQuery, (error, results) => {
-            if(error){
+            if (error) {
                 throw error;
-            } else if(results.length === 0) {
-                return response.json({error: {error_code: "INVALLID_CREDENTIAL"}, description: "invalid user credential"});
-            } else if(results.length > 0){
+            } else if (results.length === 0) {
+                return response.json({ error: { error_code: "INVALLID_CREDENTIAL" }, description: "invalid user credential"},alert("Invalid credential"));
+            } else if (results.length > 0) {
                 dbConn.query(roleQuery, (e, dataSet) => {
-                    if(e)
+                    if (e)
                         throw e;
-                    if(dataSet.length > 0){
+                    if (dataSet.length > 0) {
                         return response.json(dataSet[0]);
                     } else {
-                        return response.json({error: {error_code: "NO_ROLE"}, description: "no user role available"});
+                        return response.json({ error: { error_code: "NO_ROLE" }, description: "no user role available" });
                     }
                 });
-            }else {
+            } else {
                 return response.json({});
             }
         });
-    } catch(error) {
+    } catch (error) {
         throw error;
     };
 });
 
-app.post("/getDoctorDetails", (request, response) => {
-    const { doctorId } = request.body;
-    console.log("body", request.body)
-    try{
+app.post("/patientLogin", (request, response) => {
+    const { userId, password } = request.body;
+
+    try {
         response.setHeader("Content-Type", "application/json");
-        dbConn.query(`SELECT * FROM DOCTORS WHERE DOCTOR_ID = ${doctorId}`, (error, results) => {
-            if(error){
+        const userQuery = `select * from patients where patient_id = ${userId} and dob = '${password}';`
+
+       
+        dbConn.query(userQuery, (error, results) => {
+            if (error) {
+                throw error;
+            } else if (results.length === 0) {
+                return response.json({ error: { error_code: "INVALLID_CREDENTIAL" }, description: "invalid user credential" });
+            } else if (results.length > 0) {
+
+                return response.json(results[0]);
+            }
+
+        
+            return response.json({});
+
+    });
+    } catch (error) {
+    throw error;
+};
+});
+app.post("/getDoctorDetailsByUserId", (request, response) => {
+    const { userId } = request.body;
+    try {
+        response.setHeader("Content-Type", "application/json");
+        dbConn.query(`SELECT * FROM DOCTORS WHERE USER_ID = ${userId}`, (error, results) => {
+            if (error) {
                 throw error;
             }
-            if(results.length > 0) {
+            if (results.length > 0) {
                 return response.json(results[0]);
             }
             return response.json({});
         });
-    } catch(error) {
+    } catch (error) {
+        throw error;
+    };
+});
+
+
+app.post("/getHospitalDetailsByUserId", (request, response) => {
+    const { userId } = request.body;
+    try {
+        response.setHeader("Content-Type", "application/json");
+        dbConn.query(`SELECT * FROM HOSPITALS WHERE USER_ID = ${userId}`, (error, results) => {
+            if (error) {
+                throw error;
+            }
+            if (results.length > 0) {
+                return response.json(results[0]);
+            }
+            return response.json({});
+        });
+    } catch (error) {
+        throw error;
+    };
+});
+app.post("/getDoctorDetails", (request, response) => {
+    const { doctorId } = request.body;
+    console.log("body", request.body)
+    try {
+        response.setHeader("Content-Type", "application/json");
+        dbConn.query(`SELECT * FROM DOCTORS WHERE DOCTOR_ID = ${doctorId}`, (error, results) => {
+            if (error) {
+                throw error;
+            }
+            if (results.length > 0) {
+                return response.json(results[0]);
+            }
+            return response.json({});
+        });
+    } catch (error) {
         throw error;
     };
 });
 
 app.post("/getHospitalDetails", (request, response) => {
     const { hospitalId } = request.body;
-    try{
+    try {
         response.setHeader("Content-Type", "application/json");
         dbConn.query(`SELECT * FROM HOSPITALS WHERE HOSPITAL_ID = ${hospitalId}`, (error, results) => {
-            if(error){
+            if (error) {
                 throw error;
             }
-            if(results.length > 0) {
+            if (results.length > 0) {
                 return response.json(results[0]);
             }
             return response.json({});
         });
-    } catch(error) {
+    } catch (error) {
         throw error;
     };
 });
 
 app.post("/getPatientDetails", (request, response) => {
     const { patientId } = request.body;
-    try{
+    try {
         response.setHeader("Content-Type", "application/json");
         dbConn.query(`SELECT * FROM PATIENTS WHERE PATIENT_ID = ${patientId}`, (error, results) => {
-            if(error){
+            if (error) {
                 throw error;
             }
-            if(results.length > 0) {
+            if (results.length > 0) {
                 return response.json(results[0]);
             }
             return response.json({});
         });
-    } catch(error) {
+    } catch (error) {
         throw error;
     };
 });
 
 app.post("/getAdminDetails", (request, response) => {
     const { adminId } = request.body;
-    try{
+    try {
         response.setHeader("Content-Type", "application/json");
         dbConn.query(`SELECT * FROM ADMIN WHERE ADMIN_ID = ${adminId}`, (error, results) => {
-            if(error){
+            if (error) {
                 throw error;
             }
-            if(results.length > 0) {
+            if (results.length > 0) {
                 return response.json(results[0]);
             }
             return response.json({});
         });
-    } catch(error) {
+    } catch (error) {
         throw error;
     };
 });
@@ -129,18 +191,18 @@ app.post("/getAdminDetails", (request, response) => {
 app.post("/getDoctorDiseaseList", (request, response) => {
     const { doctorId } = request.body;
     const query = `SELECT D.DISEASE_ID,D.DISEASE_NAME,D.CATEGORY FROM DISEASES D WHERE D.DISEASE_ID IN(SELECT M.DISEASE_ID FROM DOCTOR_DISEASE_MAPPER M WHERE M.DOCTOR_ID = ${doctorId})`;
-    try{
+    try {
         response.setHeader("Content-Type", "application/json");
         dbConn.query(query, (error, results) => {
-            if(error){
+            if (error) {
                 throw error;
             }
-            if(results.length > 0) {
+            if (results.length > 0) {
                 return response.json(results);
             }
             return response.json([]);
         });
-    } catch(error) {
+    } catch (error) {
         throw error;
     };
 });
@@ -151,18 +213,18 @@ app.post("/getDoctorListByHospitpalId", (request, response) => {
     FROM DOCTORS D INNER JOIN HOSPITAL_DOCTOR_MAPPER HDM ON D.DOCTOR_ID=HDM.DOCTOR_ID WHERE  D.DOCTOR_ID IN( 
         SELECT M.DOCTOR_ID FROM HOSPITAL_DOCTOR_MAPPER M WHERE M.HOSPITAL_ID = ${hospitalId} 
     )`;
-    try{
+    try {
         response.setHeader("Content-Type", "application/json");
         dbConn.query(query, (error, results) => {
-            if(error){
+            if (error) {
                 throw error;
             }
-            if(results.length > 0) {
+            if (results.length > 0) {
                 return response.json(results);
             }
             return response.json([]);
         });
-    } catch(error) {
+    } catch (error) {
         throw error;
     };
 });
@@ -173,18 +235,18 @@ app.post("/getPatientListByHospitpalId", (request, response) => {
     P.CITY, P.STATE, P.PINCODE, K.CHECK_IN,K.CHECK_OUT,K.STATUS FROM PATIENTS P INNER JOIN HOSPITAL_PATIENT_MAPPER K 
     ON P.PATIENT_ID=K.PATIENT_ID WHERE P.PATIENT_ID IN(SELECT M.PATIENT_ID FROM HOSPITAL_PATIENT_MAPPER M 
     WHERE M.HOSPITAL_ID = ${hospitalId})`;
-    try{
+    try {
         response.setHeader("Content-Type", "application/json");
         dbConn.query(query, (error, results) => {
-            if(error){
+            if (error) {
                 throw error;
             }
-            if(results.length > 0) {
+            if (results.length > 0) {
                 return response.json(results);
             }
             return response.json([]);
         });
-    } catch(error) {
+    } catch (error) {
         throw error;
     };
 });
@@ -196,18 +258,18 @@ app.post("/getPatientListByDoctorId", (request, response) => {
     INNER JOIN PATIENT_DOCTOR_MAPPER K ON P.PATIENT_ID=K.PATIENT_ID WHERE P.PATIENT_ID IN(
     SELECT M.PATIENT_ID FROM PATIENT_DOCTOR_MAPPER M WHERE M.DOCTOR_ID = ${doctorId} )`;
 
-    try{
+    try {
         response.setHeader("Content-Type", "application/json");
         dbConn.query(query, (error, results) => {
-            if(error){
+            if (error) {
                 throw error;
             }
-            if(results.length > 0) {
+            if (results.length > 0) {
                 return response.json(results);
             }
             return response.json([]);
         });
-    } catch(error) {
+    } catch (error) {
         throw error;
     };
 });
@@ -219,18 +281,18 @@ app.post("/getPatientListByHospitalDoctorId", (request, response) => {
     INNER JOIN PATIENT_DOCTOR_MAPPER K ON P.PATIENT_ID=K.PATIENT_ID WHERE P.PATIENT_ID IN(
     SELECT M.PATIENT_ID FROM PATIENT_DOCTOR_MAPPER M WHERE M.DOCTOR_ID = ${doctorId} and M.HOSPITAL_ID = ${hospitalId} )`;
 
-    try{
+    try {
         response.setHeader("Content-Type", "application/json");
         dbConn.query(query, (error, results) => {
-            if(error){
+            if (error) {
                 throw error;
             }
-            if(results.length > 0) {
+            if (results.length > 0) {
                 return response.json(results);
             }
             return response.json([]);
         });
-    } catch(error) {
+    } catch (error) {
         throw error;
     };
 });
@@ -239,18 +301,18 @@ app.post("/getPatientDiseaseList", (request, response) => {
     const { patientId } = request.body;
     const query = `SELECT * FROM DISEASES WHERE DISEASE_ID IN (SELECT M.DISEASE_ID FROM PATIENT_DISEASE_MAPPER M WHERE PATIENT_ID=${patientId})`;
 
-    try{
+    try {
         response.setHeader("Content-Type", "application/json");
         dbConn.query(query, (error, results) => {
-            if(error){
+            if (error) {
                 throw error;
             }
-            if(results.length > 0) {
+            if (results.length > 0) {
                 return response.json(results);
             }
             return response.json([]);
         });
-    } catch(error) {
+    } catch (error) {
         throw error;
     };
 });
@@ -261,18 +323,18 @@ app.post("/getDoctorListByPatientId", (request, response) => {
     H.HOSPITAL_NAME FROM PATIENT_DOCTOR_MAPPER PDM INNER JOIN DOCTORS D ON D.DOCTOR_ID = PDM.DOCTOR_ID INNER JOIN HOSPITALS H 
     ON PDM.HOSPITAL_ID = H.HOSPITAL_ID WHERE PDM.PATIENT_ID = ${patientId}`;
 
-    try{
+    try {
         response.setHeader("Content-Type", "application/json");
         dbConn.query(query, (error, results) => {
-            if(error){
+            if (error) {
                 throw error;
             }
-            if(results.length > 0) {
+            if (results.length > 0) {
                 return response.json(results);
             }
             return response.json([]);
         });
-    } catch(error) {
+    } catch (error) {
         throw error;
     };
 });
