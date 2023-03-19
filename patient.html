@@ -3,39 +3,86 @@
 <head>
 	<meta charset="UTF-8">
 	<title>CSS User Profile Card</title>
-	<link rel="stylesheet" href="https://github.com/ShubhamKNIT/CodeArch/patient.css">
+	<link rel="stylesheet" href="C:/Users/ST/Downloads/CodeArch-main/patient.css">
 	<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+  <script>
+    function onPageLoad() {
+        const url = window.location.href;
+        const params = url.split("?")[1];
+        if (params) {
+            const _patientId = params.split("=")[1];
+            window.fetch("http://localhost:3004/getPatientDetails", {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ patientId: _patientId })
+            }).then(response => response.json())
+            .then(res => {
+                insertDetailsIntoDOM(res);
+                
+            }).catch(e => console.log("error", e));
+        }
+        console.log(params)
+    }
+
+    function insertDetailsIntoDOM(resp){
+        document.getElementById("show-patientId").innerHTML = resp.PATIENT_ID;
+        document.getElementById("show-firstName").innerHTML = resp.FIRST_NAME;
+        document.getElementById("show-lastName").innerHTML = resp.LAST_NAME;
+        document.getElementById("show-EMAIL").innerHTML = resp.EMAIL;
+        document.getElementById("show-PHONE").innerHTML = resp.MOBILE;
+        document.getElementById("show-identity_type").innerHTML = resp.IDENTITY_TYPE;
+        document.getElementById("show-identity_value").innerHTML = resp.IDENTITY_VALUE;
+        document.getElementById("show-CITY").innerHTML = resp.CITY;
+        document.getElementById("show-STATE").innerHTML = resp.STATE;
+        document.getElementById("show-PINCODE").innerHTML = resp.PINCODE;
+        document.getElementById("show-dob").innerHTML = resp.DOB;
+    }
+</script>
 </head>
-<body>
+<body onload="onPageLoad()">
 
 <div class="wrapper">
     <div class="left">
-        <img src="https://github.com/ShubhamKNIT/CodeArch/icon-ge0ba9687b_1920.png" 
+        <img src="C:\Users\ST\Downloads\CodeArch-main\icon-ge0ba9687b_1920.png" 
         alt="user" width="200">
         <h4>Patient</h4>
-        <h4>ID: </h4>
-         <p>
-            <!--first_name-->
-            <!--last_name-->
-            <br>DOB: <!--DOB-->
-         </p>
+        <span><h4>ID: </h4></span>
+        <span id="show-patientId"></span>
+        
     </div>
     <div class="right">
         <div class="info">
             <h3>Information</h3>
             <div class="info_data">
-                <div class="data">
-                  <h4>Email  &nbsp; &nbsp; <!--email@gmail.com--></h4>
+              <div class="data">
+                <span><h4>First Name </h4></span>
+                <span id="show-firstName"></span>
                 </div>
                 <div class="data">
-                  <h4>Phone  &nbsp; &nbsp;<!--phone no.--></h4>
+                  <span><h4>Last Name </h4></span>
+                  <span id="show-lastName"></span>
+                </div>
+             
+                <div class="data">
+                  <span><h4>Email  &nbsp; &nbsp; <!--email@gmail.com--></h4></span>
+                  <span id="show-EMAIL"></span>
                 </div>
                 <div class="data">
-                  <h4>ID Type &nbsp;&ensp;<!--ID Type--></h4>
+                  <span><h4>Phone  &nbsp; &nbsp;<!--phone no.--></h4></span>
+                  <span id="show-PHONE"></span>
                 </div>
                 <div class="data">
-                  <h4>ID Value &nbsp;&ensp;<!--ID Value--></h4>
+                  <span><h4>ID Type &nbsp;&ensp;<!--ID Type--></h4></span>
+                  <span id="show-identity_type"></span>
                 </div>
+                <div class="data">
+                  <span><h4>ID Value &nbsp;&ensp;<!--ID Value--></h4></span>
+                  <span id="show-identity_value"></span>
+                </div>
+                
             </div>
         </div>
       
@@ -43,14 +90,18 @@
             <h3>Address</h3>
             <div class="projects_data">
                 <div class="data">
-                  <h4>City &nbsp; &nbsp; &ensp; <!--["city"]--></h4>
+                  <span><h4>City &nbsp; &nbsp; &ensp; <!--["city"]--></h4></span>
+                  <span id="show-CITY"></span>
                 </div>
                 <div class="data">
-                  <h4>State &ensp;&ensp;&ensp;<!--["state]--></h4>
+                  <span><h4>State &ensp;&ensp;&ensp;<!--["state]--></h4></span>
+                  <span id="show-STATE"></span>
                 </div>
                 <div class="data">
-                  <h4>Pin &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; <!--["pincode"]--></h4>
+                  <span><h4>Pin &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; <!--["pincode"]--></h4></span>
+                  <span id="show-PINCODE"></span>
                 </div>
+                <button onclick="window.print()">Print</button>
             </div>
         </div>
     </div>
