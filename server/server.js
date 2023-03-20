@@ -33,7 +33,7 @@ app.post("/userLogin", (request, response) => {
             if (error) {
                 throw error;
             } else if (results.length === 0) {
-                return response.json({ error: { error_code: "INVALLID_CREDENTIAL" }, description: "invalid user credential"},alert("Invalid credential"));
+                return response.json({ error: { error_code: "INVALLID_CREDENTIAL" }, description: "invalid user credential"});
             } else if (results.length > 0) {
                 dbConn.query(roleQuery, (e, dataSet) => {
                     if (e)
@@ -253,8 +253,7 @@ app.post("/getPatientListByHospitpalId", (request, response) => {
 
 app.post("/getPatientListByDoctorId", (request, response) => {
     const { doctorId } = request.body;
-    const query = `SELECT P.PATIENT_ID, P.FIRST_NAME, P.LAST_NAME, P.GENDER, P.DOB, P.MOBILE, P.EMAIL, P.IDENTITY_TYPE, P.IDENTITY_VALUE, 
-    P.CITY, P.STATE, P.PINCODE, K.DOCTOR_ID, K.HOSPITAL_ID, K.FROM_DATE,K.TO_DATE,K.STATUS FROM PATIENTS P 
+    const query = `SELECT P.PATIENT_ID, P.FIRST_NAME, P.LAST_NAME, P.GENDER, P.MOBILE, K.HOSPITAL_ID, K.FROM_DATE,K.TO_DATE FROM PATIENTS P 
     INNER JOIN PATIENT_DOCTOR_MAPPER K ON P.PATIENT_ID=K.PATIENT_ID WHERE P.PATIENT_ID IN(
     SELECT M.PATIENT_ID FROM PATIENT_DOCTOR_MAPPER M WHERE M.DOCTOR_ID = ${doctorId} )`;
 
