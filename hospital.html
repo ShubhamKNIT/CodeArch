@@ -5,21 +5,61 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="/Users/shubhamkumar/Downloads/CodeArch-main/doctor.css">
+    <link rel="stylesheet" href="C:\Users\ST\Downloads\CodeArch-main\hospital.css">
+    <script>
+      function onPageLoad() {
+        const url = window.location.href;
+        const params = url.split("?")[1];
+        if (params) {
+          const _userId = params.split("=")[1];
+          window.fetch("http://localhost:3004/getHospitalDetailsByUserId", {
+            method: "POST",
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ userId: _userId })
+          }).then(response => response.json())
+            .then(res => {
+  
+              insertDetailsIntoDOM(res);
+  
+            }).catch(e => console.log("error", e));
+        }
+        console.log(params)
+      }
+  
+  
+  
+      function insertDetailsIntoDOM(resp) {
+        document.getElementById("show-hospitalId").innerHTML = resp.HOSPITAL_ID;
+        document.getElementById("show-Name").innerHTML = resp.HOSPITAL_NAME;
+        
+        document.getElementById("show-EMAIL").innerHTML = resp.EMAIL_ID;
+        
+        document.getElementById("show-STATUS").innerHTML = resp.STATUS;
+        document.getElementById("show-ADDRESS").innerHTML = resp.ADDRESS;
+        document.getElementById("show-CITY").innerHTML = resp.CITY;
+        document.getElementById("show-STATE").innerHTML = resp.STATE;
+        document.getElementById("show-PINCODE").innerHTML = resp.PINCODE;
+        document.getElementById("show-COUNTRY").innerHTML = resp.COUNTRY;
+      }
+  
+    </script>
 </head>
 <body>
     <div class="wrapper">
         <div class="left">
-            <img src="/Users/shubhamkumar/Downloads/CodeArch-main/61792.jpg" 
+            <img src="C:\Users\ST\Downloads\CodeArch-main\61792.jpg" 
             alt="user" width="200">
             <span><h4>Hospital ID: </h4></span>
-            <span id="show-doctorId"></span>
+            <span id="show-hospitalId"></span>
             
     
         </div>
         <div class="right">
             <div class="info">
-                <h3><!--hospital name--></h3>
+                <h3><span id="show-Name"></span></h3>
                 <div class="info_data">
                     <div class="data">
                       <span><h4>Email  &nbsp; &nbsp; <!--email@gmail.com--></h4></span>
