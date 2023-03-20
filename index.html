@@ -11,10 +11,10 @@
 
 
     function loginClick() {
-      
+
 
       const elements = document.getElementById("form1").elements;
-      
+
       const formData = {};
       if (elements.length > 0) {
         for (let i = 0; i < elements.length; i++) {
@@ -27,7 +27,7 @@
           formData[name] = value;
         }
       }
-      console.log("formdata",formData);
+      console.log("formdata", formData);
       if (formData['type'] === "Patient") {
         window.fetch("http://localhost:3004/patientLogin", {
           method: "POST",
@@ -44,11 +44,11 @@
           .catch(e => console.log("error", e));
       }
 
-    
 
-       
 
-       else {
+
+
+      else {
         // Hospital Employee Login service call...
         window.fetch("http://localhost:3004/userLogin", {
           method: "POST",
@@ -64,7 +64,7 @@
               window.location.href = "file:///C:/Users/ST/Downloads/CodeArch-main/doctor.html?userId=" + formData.userId;
             } else if (response.ROLE_CODE === "HOS_ADMIN") {
               window.location.href =
-                "file:///C:/Users/ST/Downloads/CodeArch-main/receptionist.html?userId=" + formData.userId;
+                "file:///C:/Users/ST/Downloads/CodeArch-main/hospital.html?userId=" + formData.userId;
             } else if (response.ROLE_CODE === "CENT_ADMIN") {
 
             }
@@ -74,7 +74,7 @@
       }
     }
 
-    
+
 
 
 
@@ -90,7 +90,7 @@
       <div class="info">
         <h3>Login</h3>
         <div class="info_data">
-          <form  id="form1">
+          <form id="form1">
             <div class="data">
               <select name="type">
                 <option value="Patient">Patient</option>
