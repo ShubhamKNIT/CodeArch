@@ -1,2 +1,2 @@
 # Hospital-Management
-team CodeArch - DevjJam Project
+team CodeArch - DevJam Project
